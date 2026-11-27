@@ -34,7 +34,7 @@ bash "$source_dir/build-icons.sh" "$runtime" "$root/spk"
 tar -C "$root/payload" -cf "$root/package.tar" .
 tar -C "$runtime" --transform='s,^node_modules,runtime/node_modules,' -rf "$root/package.tar" node_modules
 gzip -1 -n -c "$root/package.tar" > "$root/spk/package.tgz"
-file="$out/DeepSeek-Harness-SPK-DSM6-bromolow-test-0004.spk"
+file="$out/DeepSeek-Harness-SPK-DSM6-bromolow-0005.spk"
 tar -C "$root/spk" --format=ustar -cf "$file" INFO package.tgz scripts conf LICENSE PACKAGE_ICON.PNG PACKAGE_ICON_256.PNG
 tar -tf "$file"
 (cd "$out" && sha256sum "$(basename "$file")")

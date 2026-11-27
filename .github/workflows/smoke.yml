@@ -1,0 +1,32 @@
+name: 官方 Web 兼容性检查
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  web:
+    name: 官方 Web 服务与身份验证
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: 检出套件源码
+        uses: actions/checkout@v4
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.22.3
+      - name: 安装候选上游 CLI
+        run: |
+          mkdir -p "$RUNNER_TEMP/dsh"
+          npm install --prefix "$RUNNER_TEMP/dsh" --ignore-scripts --no-audit --no-fund @deepseek-ai/dsh@0.2.2-rc.5
+      - name: 验证启动与身份验证
+        run: |
+          node="$(command -v node)"
+          entry="$RUNNER_TEMP/dsh/node_modules/@deepseek-ai/dsh/lib/bin.js"
+          sh -n scripts/check-runtime.sh
+          sh scripts/check-runtime.sh "$node" "$entry"
+          python3 tests/smoke-web.py "$node" "$entry"

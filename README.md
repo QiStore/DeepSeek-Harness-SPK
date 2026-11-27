@@ -1,6 +1,15 @@
 # DeepSeek-Harness-SPK
 
-DeepSeek Harness 的群晖 DSM 原生套件社区适配。目标是在 NAS 上运行官方 Agent 和 Web UI，供电脑、手机和平板通过浏览器访问。项目当前处于运行时兼容性验证阶段。
+DeepSeek Harness 的群晖 DSM 原生套件社区适配。目标是在 NAS 上运行官方 Agent 和 Web UI，供电脑、手机和平板通过浏览器访问。
+
+## 当前可用构建
+
+`0.0.0-0004` 已在 DS3615xs-j、DSM 6.2.3-25426、Bromolow x86_64 上通过局域网 Web UI、DeepSeek 官方模型和一个第三方提供商的模型调用。
+
+- [安装、登录和排查](spk-test/README.md)
+- [SHA256 校验](SHA256SUMS.txt)
+- [变更记录](CHANGELOG.md)
+- [实机验收与正式发布条件](ACCEPTANCE.md)
 
 ## 官方上游
 

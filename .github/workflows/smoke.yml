@@ -21,12 +21,11 @@ jobs:
           node-version: 24.22.3
       - name: 安装候选上游 CLI
         run: |
-          mkdir -p "$RUNNER_TEMP/dsh"
-          npm install --prefix "$RUNNER_TEMP/dsh" --ignore-scripts --no-audit --no-fund @deepseek-ai/dsh@0.2.2-rc.5
+          npm ci --prefix runtime --ignore-scripts --no-audit --no-fund
       - name: 验证启动与身份验证
         run: |
           node="$(command -v node)"
-          entry="$RUNNER_TEMP/dsh/node_modules/@deepseek-ai/dsh/lib/bin.js"
+          entry="$PWD/runtime/node_modules/@deepseek-ai/dsh/lib/bin.js"
           sh -n scripts/check-runtime.sh
           sh scripts/check-runtime.sh "$node" "$entry"
           python3 tests/smoke-web.py "$node" "$entry"

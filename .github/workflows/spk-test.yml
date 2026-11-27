@@ -10,7 +10,7 @@ on:
       - 'scripts/check-runtime.sh'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   bromolow:
@@ -52,3 +52,12 @@ jobs:
           path: dist/
           compression-level: 0
           if-no-files-found: error
+      - name: 发布 0005 套件及校验文件
+        if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == '发布 DSM 6.2.3 构建 0005'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -f dist/DeepSeek-Harness-SPK-DSM6-bromolow-0005.spk
+          gh release create v0.0.0-0005 dist/*.spk dist/SHA256SUMS.txt \
+            --target "$GITHUB_SHA" --prerelease --title "DeepSeek Harness DSM 6.2.3 · 0005" \
+            --notes "适用 DSM 6.2.3 / Bromolow x86_64。套件中心显示 DeepSeek Harness。0004 已通过局域网 Web UI、DeepSeek 官方模型和第三方模型调用。覆盖安装前请备份配置和工作区。请使用随本 Release 附带的 SHA256SUMS.txt 验证该次构建。"

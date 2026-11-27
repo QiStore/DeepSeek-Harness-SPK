@@ -32,30 +32,23 @@ start)
     export XDG_CACHE_HOME="$HOME/cache" XDG_STATE_HOME="$HOME/state"
     cd "$state/workspace"
     LD_LIBRARY_PATH="$compat" "$node" --version > "$log" 2>&1 || exit 1
-    PATH="$PATH:/sbin:/usr/sbin"
-    export PATH
-    if ! command -v ip >/dev/null 2>&1; then
-        echo "找不到 DSM 的 ip 命令" >> "$log"
-        exit 1
-    fi
-    if ! host="$(ip -o -4 addr show scope global | awk '
-        $3 == "inet" {
-            split($4, address, "/")
-            if (address[1] ~ /^192[.]168[.]1[.][0-9]+$/) {
-                print address[1]
-                exit
-            }
-        }
-    ')" || [ -z "$host" ]; then
+    if ! host="$(LD_LIBRARY_PATH="$compat" "$node" -e '
+        const { networkInterfaces } = require("node:os");
+        const addresses = Object.values(networkInterfaces()).flat();
+        const lan = addresses.find(({ address, internal }) =>
+            !internal && /^192[.]168[.]1[.][0-9]+$/.test(address));
+        if (lan) process.stdout.write(lan.address);
+    ' 2>> "$log")" || [ -z "$host" ]; then
         echo "没有找到 192.168.1.x 局域网地址" >> "$log"
         exit 1
     fi
-    LD_LIBRARY_PATH="$compat" "$node" "$entry" web --host "$host" --port 3080 --no-open >> "$log" 2>&1 </dev/null &
+    url="http://$host:3080/"
+    LD_LIBRARY_PATH="$compat" "$node" "$entry" web --host "$host" --port 3080 --public-url "$url" --trusted-host "$host" --no-open >> "$log" 2>&1 </dev/null &
     pid="$!"
     printf '%s\n' "$pid" > "$pidfile"
     attempts=0
     while kill -0 "$pid" 2>/dev/null && [ "$attempts" -lt 30 ]; do
-        if running && grep -Fq "http://$host:3080/" "$log"; then exit 0; fi
+        if running && grep -Fq "$url" "$log"; then exit 0; fi
         sleep 1
         attempts=$((attempts + 1))
     done

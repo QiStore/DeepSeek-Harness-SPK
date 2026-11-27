@@ -1,1 +1,2 @@
+643cd74dfada0e2eef164c38a8a606f854f705f3bdc19079417807fb301aa1d1  DeepSeek-Harness-SPK-DSM6-bromolow-0005.spk
 b416e8b4610ee1832eba4f7c7c395048004a7ba09ff786064ab69500b2f2a356  DeepSeek-Harness-SPK-DSM6-bromolow-test-0004.spk

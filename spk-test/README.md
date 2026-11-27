@@ -1,6 +1,6 @@
 # DSM 6.2.3 实机测试包
 
-适用于 DS3615xs-j / Bromolow x86_64。套件构建号为 `0.0.0-0003`，内置 Node.js 24.22.3 glibc 2.17 社区构建和官方 DeepSeek Harness 0.2.2-rc.5。内置套件专用的 libstdc++ 和 libgcc，修复 0001 在 DSM 上遇到的 GLIBCXX_3.4.21 加载错误。测试数据随套件程序存放，请使用临时工作区和测试数据。
+适用于 DS3615xs-j / Bromolow x86_64。套件构建号为 `0.0.0-0004`，内置 Node.js 24.22.3 glibc 2.17 社区构建和官方 DeepSeek Harness 0.2.2-rc.5。内置套件专用的 libstdc++ 和 libgcc，修复 0001 在 DSM 上遇到的 GLIBCXX_3.4.21 加载错误。测试数据随套件程序存放，请使用临时工作区和测试数据。
 
 1. DSM 套件中心 → 手动安装，选择 SPK。安装后点击运行。
 2. 在同一局域网内，用电脑或手机访问 NAS 的 `192.168.1.x:3080`。首次登录需要启动链接。在 NAS 上通过 SSH 读取该链接。
@@ -18,4 +18,4 @@
    sudo -u dshspk env LD_LIBRARY_PATH="$PWD/runtime/compat-lib" sh ./check-runtime.sh "$PWD/runtime/node" "$PWD/runtime/node_modules/@deepseek-ai/dsh/lib/bin.js"
    ```
 
-服务自动选用 NAS 上的一个 `192.168.1.x` 地址监听 3080。DSM 菜单、升级保留、异常恢复和正式发布仍在后续交付范围内。
+套件中心使用上游 Web 前端的官方 Harness 图标。服务自动选用 NAS 上的一个 `192.168.1.x` 地址监听 3080，并显式以该地址生成首次登录链接。DSM 菜单、升级保留、异常恢复和正式发布仍在后续交付范围内。

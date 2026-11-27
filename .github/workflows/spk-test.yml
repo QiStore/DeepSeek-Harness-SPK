@@ -40,7 +40,11 @@ jobs:
           mkdir -p "$RUNNER_TEMP/payload"
           tar -xOf dist/*.spk package.tgz | tar -C "$RUNNER_TEMP/payload" -xzf -
           runtime="$RUNNER_TEMP/payload/runtime"
-          python3 tests/smoke-web.py "$runtime/node" "$runtime/node_modules/@deepseek-ai/dsh/lib/bin.js"
+          LD_LIBRARY_PATH="$runtime/compat-lib" sh scripts/check-runtime.sh "$runtime/node" "$runtime/node_modules/@deepseek-ai/dsh/lib/bin.js"
+          wrapper="$RUNNER_TEMP/dsh-node"
+          printf '#!/bin/sh\nLD_LIBRARY_PATH="%s" exec "%s" "$@"\n' "$runtime/compat-lib" "$runtime/node" > "$wrapper"
+          chmod +x "$wrapper"
+          python3 tests/smoke-web.py "$wrapper" "$runtime/node_modules/@deepseek-ai/dsh/lib/bin.js"
       - name: 提供实机测试下载
         uses: actions/upload-artifact@v4
         with:

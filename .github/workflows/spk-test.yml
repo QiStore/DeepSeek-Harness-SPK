@@ -1,0 +1,50 @@
+name: DSM 6.2.3 测试 SPK
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'spk-test/**'
+      - '.github/workflows/spk-test.yml'
+      - 'runtime/**'
+      - 'tests/smoke-web.py'
+      - 'scripts/check-runtime.sh'
+
+permissions:
+  contents: read
+
+jobs:
+  bromolow:
+    name: 构建 Bromolow 测试 SPK
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: 检出源码
+        uses: actions/checkout@v4
+      - name: 配置构建 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.22.3
+      - name: 安装锁定依赖
+        run: npm ci --prefix runtime --ignore-scripts --no-audit --no-fund
+      - name: 下载并检查候选运行时
+        run: |
+          archive=node-v24.22.3-linux-x64-glibc-217.tar.xz
+          curl --fail --silent --show-error --location --retry 3 -o "$archive" "https://unofficial-builds.nodejs.org/download/release/v24.22.3/$archive"
+          echo "f15f516e7a451982730cdc6fdb7928205f5b2935deba70e6543705f04847c911  $archive" | sha256sum -c -
+          tar -xJf "$archive"
+      - name: 构建测试包并校验
+        run: |
+          mkdir -p dist
+          spk-test/build.sh node-v24.22.3-linux-x64-glibc-217 runtime dist
+          (cd dist && sha256sum ./*.spk > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt)
+          mkdir -p "$RUNNER_TEMP/payload"
+          tar -xOf dist/*.spk package.tgz | tar -C "$RUNNER_TEMP/payload" -xzf -
+          runtime="$RUNNER_TEMP/payload/runtime"
+          python3 tests/smoke-web.py "$runtime/node" "$runtime/node_modules/@deepseek-ai/dsh/lib/bin.js"
+      - name: 提供实机测试下载
+        uses: actions/upload-artifact@v4
+        with:
+          name: DeepSeek-Harness-SPK-DSM6-bromolow-test
+          path: dist/
+          compression-level: 0
+          if-no-files-found: error

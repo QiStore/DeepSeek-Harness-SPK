@@ -11,7 +11,20 @@ DeepSeek Harness 的群晖 DSM 原生套件社区适配。在 NAS 上运行官�
 
 1. 如已安装 `0004`，先备份要保留的配置和工作区。覆盖安装的数据保留仍待实机验证。
 2. 在 **DSM 套件中心 → 手动安装** 选择 `0005`，安装后启动。
-3. 在同一局域网打开 NAS 的 `192.168.1.x:3080`。首次访问请使用完整的登录链接，获取方式见 [安装、登录和排查](spk-test/README.md)。
+3. 在同一局域网打开 NAS 的 `192.168.1.x:3080`。首次登录或需要重新登录时，从启动日志获取完整链接。
+
+## 查登录链接、版本和运行状态
+
+1. 在 **DSM → 套件中心 → 已安装 → DeepSeek Harness** 确认显示「已启动」。同一页可以查看已安装的版本。
+2. SSH 登录 NAS，在 NAS 上运行下面的命令，查看最近一次启动生成的登录链接。
+
+   ```sh
+   sudo grep -F ':3080/' /var/packages/DeepSeek-Harness-SPK/target/.test-state/startup.log | tail -n 1
+   ```
+
+3. 在同一局域网的浏览器打开输出中的完整 URL，保留 `?` 后面的参数。链接含登录凭据，请勿分享。重启套件后，如旧链接失效，重新运行上面的命令。
+
+如果命令没有输出，先确认套件是否启动成功，再参照 [安装与排查说明](spk-test/README.md)。查新版时，打开 [GitHub Releases](https://github.com/QiStore/DeepSeek-Harness-SPK/releases)，查看 **Latest**。
 
 ## 验收状态
 

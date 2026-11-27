@@ -31,3 +31,29 @@ cd "$probe/workspace"
 "$1" --version
 "$1" -e 'const { DatabaseSync } = require("node:sqlite"); const db = new DatabaseSync(":memory:"); console.log(db.prepare("SELECT sqlite_version() AS version").get().version); db.close()'
 "$1" "$2" web --help
+
+"$1" - "$2" <<'JS'
+const { createRequire } = require("node:module");
+const { spawn } = createRequire(process.argv[2])("node-pty");
+const terminal = spawn("/bin/sh", ["-c", "printf 'dsh-pty-ok\\n'"], {
+  name: "xterm",
+  cols: 80,
+  rows: 24,
+  env: { PATH: "/usr/bin:/bin" },
+});
+let output = "";
+const timeout = setTimeout(() => {
+  process.exitCode = 1;
+  terminal.kill();
+}, 5000);
+terminal.onData((chunk) => { output += chunk; });
+terminal.onExit(({ exitCode }) => {
+  clearTimeout(timeout);
+  if (exitCode !== 0 || !output.includes("dsh-pty-ok")) {
+    console.error("终端子进程验证失败");
+    process.exitCode = 1;
+    return;
+  }
+  console.log("通过：终端原生模块加载并运行了测试命令");
+});
+JS

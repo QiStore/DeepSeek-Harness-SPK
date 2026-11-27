@@ -7,16 +7,17 @@
 | 检查项 | 结果 |
 | --- | --- |
 | Linux x86_64，内核 6.18.57，glibc 2.41 | 已记录 |
-| Node 24.22.3、内存 SQLite 及官方 CLI 参数 | 通过 |
-| 默认仅绑定回环地址、匿名访问拦截、启动凭据换取会话 Cookie | 通过 |
-| Node 24.22.3 glibc 2.17 社区构建 | 下载 SHA256 校验通过，在同一隔离环境通过 Web 冒烟 |
+| npm ci 按锁文件安装官方 CLI 并完成 Web 冒烟 | 通过 |
+| Node 24.22.3、内存 SQLite、官方 CLI 参数和 Linux 原生 PTY 子进程 | 通过 |
+| 显式绑定回环地址、匿名访问拦截、启动凭据换取会话 Cookie | 通过 |
+| Node 24.22.3 glibc 2.17 社区构建 | 下载 SHA256 校验通过，在同一隔离环境通过 Web 冒烟和原生 PTY 测试 |
 | 上游 `node-pty` 的 Linux x64 预编译模块 | ELF 版本需求含 `GLIBC_2.28`，目标 DSM 上尚待验证 |
 
 Node 社区构建的 Web 冒烟结果只覆盖当前 Linux 环境。终端、文件权限和旧内核的行为需要在目标机验证。
 
 ## DSM 实机验收
 
-Desktop Commander 当前显示 DiskStation 离线。
+Desktop Commander 当前显示 DiskStation 离线。隔离工作环境也无法直连 DSM 局域网管理端口。
 
 | 检查项 | 结果 |
 | --- | --- |

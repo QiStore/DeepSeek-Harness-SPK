@@ -6,8 +6,8 @@ DeepSeek Harness 的群晖 DSM 原生套件社区适配。在 NAS 上运行官�
 
 当前构建为 **`0.0.0-0005`**。DSM 套件中心显示名为 **DeepSeek Harness**，并使用官方 Harness 图标。运行时载荷与 `0004` 的 SHA256 一致。
 
-- [下载 DeepSeek-Harness-SPK-DSM6-bromolow-0005.spk](https://chatgpt.com/library?file_id=libfile_b18fb946d5d481918d568c60af23961a&account_id=personal)（需使用拥有该文件的 ChatGPT 账号）
-- [SHA256 校验](SHA256SUMS.txt) · [变更记录](CHANGELOG.md)
+- [下载 DeepSeek-Harness-SPK-DSM6-bromolow-0005.spk](https://github.com/QiStore/DeepSeek-Harness-SPK/releases/download/v0.0.0-0005/DeepSeek-Harness-SPK-DSM6-bromolow-0005.spk)
+- [Release 附带的 SHA256 校验](https://github.com/QiStore/DeepSeek-Harness-SPK/releases/download/v0.0.0-0005/SHA256SUMS.txt) · [变更记录](CHANGELOG.md)
 
 1. 如已安装 `0004`，先备份要保留的配置和工作区。覆盖安装的数据保留仍待实机验证。
 2. 在 **DSM 套件中心 → 手动安装** 选择 `0005`，安装后启动。

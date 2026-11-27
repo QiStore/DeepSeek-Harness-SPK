@@ -4,6 +4,8 @@ DeepSeek Harness 的群晖 DSM 原生套件社区适配。目标是在 NAS 上�
 
 ## 当前可用构建
 
+`0.0.0-0005` 将套件中心名称改为 DeepSeek Harness，并更新产品描述。运行时载荷与 `0004` 一致。
+
 `0.0.0-0004` 已在 DS3615xs-j、DSM 6.2.3-25426、Bromolow x86_64 上通过局域网 Web UI、DeepSeek 官方模型和一个第三方提供商的模型调用。
 
 - [安装、登录和排查](spk-test/README.md)

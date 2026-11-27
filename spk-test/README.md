@@ -1,6 +1,6 @@
 # DSM 6.2.3 实机测试包
 
-适用于 DS3615xs-j / Bromolow x86_64。套件构建号为 `0.0.0-0001`，内置 Node.js 24.22.3 glibc 2.17 社区构建和官方 DeepSeek Harness 0.2.2-rc.5。测试数据随套件程序存放，请使用临时工作区和测试数据。
+适用于 DS3615xs-j / Bromolow x86_64。套件构建号为 `0.0.0-0002`，内置 Node.js 24.22.3 glibc 2.17 社区构建和官方 DeepSeek Harness 0.2.2-rc.5。内置套件专用的 libstdc++ 和 libgcc，修复 0001 在 DSM 上遇到的 GLIBCXX_3.4.21 加载错误。测试数据随套件程序存放，请使用临时工作区和测试数据。
 
 1. DSM 套件中心 → 手动安装，选择 SPK。安装后点击运行。
 2. 在 Windows PowerShell 建立 SSH 隧道。将 `DSM用户` 替换为可以 SSH 登录 NAS 的管理员账号。
@@ -20,7 +20,7 @@
 
    ```sh
    cd /var/packages/DeepSeek-Harness-SPK/target
-   sudo -u dshspk sh ./check-runtime.sh "$PWD/runtime/node" "$PWD/runtime/node_modules/@deepseek-ai/dsh/lib/bin.js"
+   sudo -u dshspk env LD_LIBRARY_PATH="$PWD/runtime/compat-lib" sh ./check-runtime.sh "$PWD/runtime/node" "$PWD/runtime/node_modules/@deepseek-ai/dsh/lib/bin.js"
    ```
 
 当前测试入口仅绑定本机端口 3080。DSM 菜单、升级保留、异常恢复和正式发布仍在后续交付范围内。
